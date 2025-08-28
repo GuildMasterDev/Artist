@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     ipcRenderer.on('menu-action', (_event, action) => callback(action));
   },
   openExternal: (url: string) => {
+    console.log('Opening external URL:', url);
     ipcRenderer.send('open-external', url);
   },
   getAppVersion: () => {

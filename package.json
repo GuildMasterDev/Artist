@@ -1,6 +1,7 @@
 {
   "name": "artist",
-  "version": "1.0.0",
+  "productName": "Artist",
+  "version": "1.0.1",
   "description": "A smart tool for navigating the art world",
   "main": "dist/electron/main.js",
   "scripts": {
@@ -45,22 +46,87 @@
   "build": {
     "appId": "com.guildmasterdev.artist",
     "productName": "Artist",
+    "copyright": "Copyright © 2024 GuildMaster Development",
     "directories": {
-      "output": "release/"
+      "output": "release/",
+      "buildResources": "resources"
     },
     "files": [
       "dist/**/*",
-      "electron/**/*",
+      "!dist/electron/*.ts",
       "package.json"
     ],
+    "extraFiles": [
+      {
+        "from": "dist/electron",
+        "to": "electron",
+        "filter": ["**/*.js"]
+      }
+    ],
     "mac": {
-      "category": "public.app-category.graphics-design"
+      "category": "public.app-category.graphics-design",
+      "icon": "resources/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "resources/entitlements.mac.plist",
+      "entitlementsInherit": "resources/entitlements.mac.plist",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
+      ]
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "artifactName": "${productName}-${version}-${os}.${ext}"
     },
     "win": {
-      "target": "nsis"
+      "icon": "resources/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        }
+      ],
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": true,
+      "artifactName": "${productName}-Setup-${version}.${ext}"
     },
     "linux": {
-      "target": "AppImage"
+      "icon": "resources/icons",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        }
+      ],
+      "category": "Graphics",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     }
   }
 }

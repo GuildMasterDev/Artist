@@ -15,14 +15,16 @@
       
       <p class="card-description">{{ category.description }}</p>
       
-      <div class="resource-list" *ngIf="selectedCategory === category">
-        <div 
+      <div class="resource-list" *ngIf="selectedCategory === category" (click)="$event.stopPropagation()">
+        <a 
           *ngFor="let resource of category.resources" 
           class="resource-item"
-          (click)="openResource(resource.url); $event.stopPropagation()">
+          [href]="resource.url"
+          target="_blank"
+          (click)="openResource(resource.url, $event)">
           <span class="resource-name">{{ resource.name }}</span>
           <span class="resource-description">{{ resource.description }}</span>
-        </div>
+        </a>
       </div>
       
       <div class="card-footer">

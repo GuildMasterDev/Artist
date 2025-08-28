@@ -130,7 +130,12 @@ export class NavigationHubComponent {
     this.selectedCategory = this.selectedCategory === category ? null : category;
   }
 
-  openResource(url: string): void {
+  openResource(url: string, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    
     if ((window as any).electronAPI) {
       (window as any).electronAPI.openExternal(url);
     } else {

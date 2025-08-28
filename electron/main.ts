@@ -1,6 +1,9 @@
-import { app, BrowserWindow, screen, Menu, shell } from 'electron';
+import { app, BrowserWindow, screen, Menu, shell, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+
+// Set the app name
+app.setName('Artist');
 
 let mainWindow: BrowserWindow | null = null;
 const args = process.argv.slice(1);
@@ -150,4 +153,9 @@ app.whenReady().then(() => {
     credits: 'A hub for artists to navigate tools, resources, and projects.',
     website: 'https://www.guildmasterdev.com'
   });
+});
+
+// Handle opening external links
+ipcMain.on('open-external', (_event, url) => {
+  shell.openExternal(url);
 });

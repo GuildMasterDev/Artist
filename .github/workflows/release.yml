@@ -1,0 +1,126 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - os: macos-latest
+            platform: mac
+          - os: ubuntu-latest
+            platform: linux
+          - os: windows-latest
+            platform: win
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: npm
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Angular app
+        run: npm run ng:build
+      
+      - name: Build Electron TypeScript
+        run: npm run electron:build
+      
+      # macOS Code Signing (optional - requires certificates)
+      - name: Prepare for macOS notarization
+        if: startsWith(matrix.os, 'macos')
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+        run: |
+          # Only run if secrets are configured
+          echo "macOS build prepared"
+      
+      # Build distributables
+      - name: Build Electron App
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: For macOS code signing
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          # Optional: For Windows code signing
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+        run: |
+          if [ "${{ matrix.platform }}" = "mac" ]; then
+            npm run electron:dist -- --mac
+          elif [ "${{ matrix.platform }}" = "linux" ]; then
+            npm run electron:dist -- --linux
+          elif [ "${{ matrix.platform }}" = "win" ]; then
+            npm run electron:dist -- --win
+          fi
+        shell: bash
+      
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-${{ matrix.platform }}
+          path: |
+            release/*.dmg
+            release/*.zip
+            release/*.exe
+            release/*.AppImage
+            release/*.deb
+            release/*.rpm
+          retention-days: 5
+  
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v3
+      
+      - name: Download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: release-artifacts
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          prerelease: false
+          files: |
+            release-artifacts/**/*.dmg
+            release-artifacts/**/*.zip
+            release-artifacts/**/*.exe
+            release-artifacts/**/*.AppImage
+            release-artifacts/**/*.deb
+          body: |
+            ## Artist v${{ github.ref_name }}
+            
+            ### Installation
+            
+            **macOS:** Download the .dmg file and drag Artist to Applications
+            **Windows:** Download and run the .exe installer
+            **Linux:** Download the .AppImage and make it executable
+            
+            ### What's New
+            - Check the commit history for updates
+            
+            ---
+            Built with ❤️ by GuildMaster Development
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
