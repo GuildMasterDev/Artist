@@ -76,11 +76,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-${{ matrix.platform }}
-          path: |
-            release/*.dmg
-            release/*.zip
-            release/*.exe
-            release/*.AppImage
+          path: release/
+          if-no-files-found: warn
           retention-days: 5
   
   release:
@@ -96,6 +93,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+          pattern: dist-*
+          merge-multiple: false
+      
+      - name: Display structure of downloaded files
+        run: |
+          echo "=== Downloaded artifacts structure ==="
+          ls -R release-artifacts/
       
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
