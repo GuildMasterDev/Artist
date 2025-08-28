@@ -35,10 +35,10 @@ jobs:
         run: npm install
       
       - name: Build Angular app
-        run: npm run ng:build
+        run: npx ng build --base-href ./
       
       - name: Build Electron TypeScript
-        run: npm run electron:build
+        run: npx tsc -p electron/tsconfig.json
       
       # macOS Code Signing (optional - requires certificates)
       - name: Prepare for macOS notarization
@@ -62,11 +62,11 @@ jobs:
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
         run: |
           if [ "${{ matrix.platform }}" = "mac" ]; then
-            npm run electron:dist -- --mac
+            npx electron-builder --mac
           elif [ "${{ matrix.platform }}" = "linux" ]; then
-            npm run electron:dist -- --linux
+            npx electron-builder --linux
           elif [ "${{ matrix.platform }}" = "win" ]; then
-            npm run electron:dist -- --win
+            npx electron-builder --win
           fi
         shell: bash
       
