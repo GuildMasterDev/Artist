@@ -61,6 +61,7 @@
     ],
     "mac": {
       "category": "public.app-category.graphics-design",
+      "icon": "resources/icon.icns",
       "hardenedRuntime": false,
       "gatekeeperAssess": false,
       "target": [
@@ -90,6 +91,7 @@
       "artifactName": "${productName}-${version}-${os}.${ext}"
     },
     "win": {
+      "icon": "resources/icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -106,6 +108,7 @@
       "artifactName": "${productName}-Setup-${version}.${ext}"
     },
     "linux": {
+      "icon": "resources/icons",
       "target": [
         {
           "target": "AppImage",
