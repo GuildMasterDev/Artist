@@ -82,8 +82,6 @@ jobs:
             release/*.zip
             release/*.exe
             release/*.AppImage
-            release/*.deb
-            release/*.rpm
           retention-days: 5
   
   release:
@@ -110,7 +108,6 @@ jobs:
             release-artifacts/**/*.zip
             release-artifacts/**/*.exe
             release-artifacts/**/*.AppImage
-            release-artifacts/**/*.deb
           body: |
             ## Artist v${{ github.ref_name }}
             
