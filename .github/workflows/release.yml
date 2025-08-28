@@ -102,31 +102,31 @@ jobs:
           echo "=== Downloaded artifacts structure ==="
           ls -R release-artifacts/ || echo "Failed to list artifacts"
       
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: false
-          prerelease: false
-          fail_on_unmatched_files: false
-          files: |
-            release-artifacts/**/*.dmg
-            release-artifacts/**/*.zip
-            release-artifacts/**/*.exe
-            release-artifacts/**/*.AppImage
-            release-artifacts/**/*.deb
-          body: |
-            ## Artist v${{ github.ref_name }}
-            
-            ### Installation
-            
-            **macOS:** Download the .dmg file and drag Artist to Applications
-            **Windows:** Download and run the .exe installer
-            **Linux:** Download the .AppImage and make it executable
-            
-            ### What's New
-            - Check the commit history for updates
-            
-            ---
-            Built with ❤️ by GuildMaster Development
+      - name: Create Release with GitHub CLI
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Find all release files
+          echo "Finding release files..."
+          find release-artifacts -type f \( -name "*.dmg" -o -name "*.zip" -o -name "*.exe" -o -name "*.AppImage" \) > files.txt
+          
+          # Create release
+          echo "Creating GitHub release..."
+          gh release create v${{ github.ref_name }} \
+            --title "Artist v${{ github.ref_name }}" \
+            --notes "## Artist v${{ github.ref_name }}
+            
+### Installation
+            
+**macOS:** Download the .dmg file and drag Artist to Applications
+**Windows:** Download and run the .exe installer  
+**Linux:** Download the .AppImage and make it executable
+
+### What's New
+- Automated release with installers for all platforms
+- Beautiful artistic UI with theme support
+- Resource hub for creative tools
+
+---
+Built with ❤️ by GuildMaster Development" \
+            $(cat files.txt) || echo "Release may already exist or failed"

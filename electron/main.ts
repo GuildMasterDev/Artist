@@ -45,7 +45,7 @@ function createWindow(): void {
     mainWindow.loadURL('http://localhost:4300');
   } else {
     mainWindow.loadURL(url.format({
-      pathname: path.join(__dirname, '../../dist/index.html'),
+      pathname: path.join(__dirname, '../index.html'),
       protocol: 'file:',
       slashes: true
     }));

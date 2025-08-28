@@ -64,6 +64,12 @@
       "icon": "resources/icon.icns",
       "hardenedRuntime": false,
       "gatekeeperAssess": false,
+      "entitlementsInherit": "resources/entitlements.mac.plist",
+      "extendInfo": {
+        "NSAppleEventsUsageDescription": "Please allow Artist to open external links.",
+        "NSCameraUsageDescription": "This app does not use the camera.",
+        "NSMicrophoneUsageDescription": "This app does not use the microphone."
+      },
       "target": [
         {
           "target": "dmg",
