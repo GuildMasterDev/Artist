@@ -53,15 +53,7 @@
     },
     "files": [
       "dist/**/*",
-      "!dist/electron/*.ts",
       "package.json"
-    ],
-    "extraFiles": [
-      {
-        "from": "dist/electron",
-        "to": "electron",
-        "filter": ["**/*.js"]
-      }
     ],
     "mac": {
       "category": "public.app-category.graphics-design",

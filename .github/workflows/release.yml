@@ -38,7 +38,10 @@ jobs:
         run: npx ng build --base-href ./
       
       - name: Build Electron TypeScript
-        run: npx tsc -p electron/tsconfig.json
+        run: |
+          npx tsc -p electron/tsconfig.json
+          ls -la dist/
+          ls -la dist/electron/
       
       # macOS Code Signing (optional - requires certificates)
       - name: Prepare for macOS notarization
