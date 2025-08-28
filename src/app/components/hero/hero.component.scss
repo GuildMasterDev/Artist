@@ -1,5 +1,5 @@
 .hero-section {
-  min-height: 25vh;
+  height: clamp(120px, 20vh, 200px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,6 +32,7 @@
   text-align: center;
   z-index: 1;
   position: relative;
+  padding: 1.5rem;
 }
 
 .hero-title {
@@ -59,18 +60,24 @@
 
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  50% { transform: translateY(-5px); }
 }
 
 .hero-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 1.25rem;
+  font-size: clamp(0.9rem, 2vw, 1.25rem);
   font-weight: 300;
   color: var(--text-light);
   margin-top: 1rem;
   opacity: 0.9;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .hero-section {
+    min-height: 20vh;
+  }
 }
 
 .hero-decoration {

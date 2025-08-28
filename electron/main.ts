@@ -9,13 +9,16 @@ const serve = args.some(val => val === '--serve');
 function createWindow(): void {
   const size = screen.getPrimaryDisplay().workAreaSize;
 
+  const windowWidth = size.width - 100;
+  const windowHeight = size.height - 50;
+  
   mainWindow = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: size.width * 0.8,
-    height: size.height * 0.9,
-    minWidth: 1024,
-    minHeight: 768,
+    x: Math.floor((size.width - windowWidth) / 2),
+    y: Math.floor((size.height - windowHeight) / 2),
+    width: windowWidth,
+    height: windowHeight,
+    minWidth: 1200,
+    minHeight: 900,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,

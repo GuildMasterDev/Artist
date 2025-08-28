@@ -3,13 +3,15 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
 .hub-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-  grid-auto-rows: minmax(120px, auto);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  grid-auto-rows: 1fr;
+  height: 100%;
 }
 
 .category-card {
@@ -155,12 +157,31 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1400px) {
+  .hub-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .category-card.expanded {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 900px) {
   .hub-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .category-card.expanded {
     grid-column: span 1;
+  }
+  
+  .card-title {
+    font-size: 1.1rem;
+  }
+  
+  .card-description {
+    font-size: 0.8rem;
   }
 }
