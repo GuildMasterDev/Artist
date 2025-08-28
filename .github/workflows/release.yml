@@ -41,9 +41,9 @@ jobs:
         run: |
           npx tsc -p electron/tsconfig.json
           echo "=== dist/ contents ==="
-          ls -la dist/
+          ls dist/
           echo "=== dist/electron/ contents ==="
-          ls -la dist/electron/
+          ls dist/electron/
       
       # macOS Code Signing (optional - requires certificates)
       - name: Prepare for macOS notarization
@@ -69,7 +69,7 @@ jobs:
             npx electron-builder --win --publish never || true
           fi
           echo "=== Checking release directory ==="
-          ls -la release/ || echo "No release directory"
+          ls release/ || echo "No release directory"
         shell: bash
       
       - name: Upload artifacts
