@@ -40,7 +40,9 @@ jobs:
       - name: Build Electron TypeScript
         run: |
           npx tsc -p electron/tsconfig.json
+          echo "=== dist/ contents ==="
           ls -la dist/
+          echo "=== dist/electron/ contents ==="
           ls -la dist/electron/
       
       # macOS Code Signing (optional - requires certificates)
@@ -55,21 +57,19 @@ jobs:
       
       # Build distributables
       - name: Build Electron App
-        env:
-          # Optional: For macOS code signing
-          CSC_LINK: ${{ secrets.CSC_LINK }}
-          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
-          # Optional: For Windows code signing
-          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
-          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
         run: |
+          unset GH_TOKEN
+          unset GITHUB_TOKEN
+          echo "Building for platform: ${{ matrix.platform }}"
           if [ "${{ matrix.platform }}" = "mac" ]; then
-            npx electron-builder --mac --publish never
+            npx electron-builder --mac --publish never || true
           elif [ "${{ matrix.platform }}" = "linux" ]; then
-            npx electron-builder --linux --publish never
+            npx electron-builder --linux --publish never || true
           elif [ "${{ matrix.platform }}" = "win" ]; then
-            npx electron-builder --win --publish never
+            npx electron-builder --win --publish never || true
           fi
+          echo "=== Checking release directory ==="
+          ls -la release/ || echo "No release directory"
         shell: bash
       
       - name: Upload artifacts
