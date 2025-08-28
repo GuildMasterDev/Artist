@@ -61,11 +61,8 @@
     ],
     "mac": {
       "category": "public.app-category.graphics-design",
-      "icon": "resources/icon.icns",
-      "hardenedRuntime": true,
+      "hardenedRuntime": false,
       "gatekeeperAssess": false,
-      "entitlements": "resources/entitlements.mac.plist",
-      "entitlementsInherit": "resources/entitlements.mac.plist",
       "target": [
         {
           "target": "dmg",
@@ -93,7 +90,6 @@
       "artifactName": "${productName}-${version}-${os}.${ext}"
     },
     "win": {
-      "icon": "resources/icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -110,7 +106,6 @@
       "artifactName": "${productName}-Setup-${version}.${ext}"
     },
     "linux": {
-      "icon": "resources/icon.svg",
       "target": [
         {
           "target": "AppImage",
