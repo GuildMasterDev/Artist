@@ -56,7 +56,6 @@ jobs:
       # Build distributables
       - name: Build Electron App
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Optional: For macOS code signing
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
@@ -65,11 +64,11 @@ jobs:
           WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
         run: |
           if [ "${{ matrix.platform }}" = "mac" ]; then
-            npx electron-builder --mac
+            npx electron-builder --mac --publish never
           elif [ "${{ matrix.platform }}" = "linux" ]; then
-            npx electron-builder --linux
+            npx electron-builder --linux --publish never
           elif [ "${{ matrix.platform }}" = "win" ]; then
-            npx electron-builder --win
+            npx electron-builder --win --publish never
           fi
         shell: bash
       
