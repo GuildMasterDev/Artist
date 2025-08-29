@@ -110,17 +110,21 @@ jobs:
           echo "Finding release files..."
           find release-artifacts -type f \( -name "*.dmg" -o -name "*.zip" -o -name "*.exe" -o -name "*.AppImage" \) > files.txt
           
+          # Extract version number (remove 'v' prefix)
+          VERSION="${{ github.ref_name }}"
+          VERSION="${VERSION#v}"
+          
           # Create release
           echo "Creating GitHub release..."
-          gh release create v${{ github.ref_name }} \
-            --title "Artist v${{ github.ref_name }}" \
-            --notes "## Artist v${{ github.ref_name }}
-            
+          gh release create "${{ github.ref_name }}" \
+            --title "Artist v${VERSION}" \
+            --notes "$(cat <<'EOF'
+## Artist v${VERSION}
+
 ### Installation
-            
-**macOS:** Download the .dmg file and drag Artist to Applications
-**Windows:** Download and run the .exe installer  
-**Linux:** Download the .AppImage and make it executable
+- **macOS:** Download the .dmg file and drag Artist to Applications
+- **Windows:** Download and run the .exe installer  
+- **Linux:** Download the .AppImage and make it executable
 
 ### What's New
 - Automated release with installers for all platforms
@@ -128,5 +132,7 @@ jobs:
 - Resource hub for creative tools
 
 ---
-Built with ❤️ by GuildMaster Development" \
+Built with ❤️ by GuildMaster Development
+EOF
+          )" \
             $(cat files.txt) || echo "Release may already exist or failed"
