@@ -48,7 +48,7 @@
     "wait-on": "^7.2.0"
   },
   "build": {
-    "appId": "com.guildmasterdev.artist",
+    "appId": "me.davidcanhelp.artist",
     "productName": "Artist",
     "copyright": "Copyright © 2024 GuildMaster Development",
     "directories": {
