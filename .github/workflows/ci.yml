@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build and Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Angular build
+        run: npx ng build
+
+      - name: Electron TypeScript build
+        run: npm run electron:build
+
+      - name: Lint
+        run: |
+          if npx ng lint --help >/dev/null 2>&1 && node -e "const a=require('./angular.json');const p=Object.values(a.projects)[0];process.exit(p.architect && p.architect.lint ? 0 : 1)"; then
+            npx ng lint
+          else
+            echo "No lint target configured; skipping."
+          fi
