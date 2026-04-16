@@ -2,9 +2,11 @@
 
 A beautiful, cross-platform desktop application for navigating the art world. Artist serves as your creative hub, providing curated resources for digital artists, designers, musicians, and creators of all kinds.
 
-![Version](https://img.shields.io/badge/version-1.0.3-blue.svg)
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)
+![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux%20%7C%20Web-lightgrey.svg)
+
+**🌐 Live Demo:** https://guildmasterdev.github.io/Artist
 
 ## 🎨 Features
 
@@ -15,7 +17,15 @@ A beautiful, cross-platform desktop application for navigating the art world. Ar
 - **Asset Libraries** - Find free resources including stock photos, 3D assets, fonts, and icons
 - **Art Marketplace** - Discover platforms to sell and showcase your artwork
 - **Dark/Light Theme** - Beautiful UI with theme switching support
-- **Cross-Platform** - Available for Windows, macOS, and Linux
+- **Cross-Platform** - Available for Windows, macOS, Linux, and as a web app
+
+## 🌐 Web Demo
+
+Try Artist directly in your browser — no installation required:
+
+**https://guildmasterdev.github.io/Artist**
+
+The web build is automatically deployed from `main` on every push. It mirrors the desktop experience; the only difference is that external links open in a new browser tab rather than your OS default handler.
 
 ## 🚀 Quick Start
 
@@ -23,15 +33,15 @@ A beautiful, cross-platform desktop application for navigating the art world. Ar
 
 Visit the [Releases](https://github.com/guildmasterdev/Artist/releases) page to download the latest version for your platform:
 
-- **Windows**: `Artist-Setup-1.0.3.exe`
-- **macOS**: `Artist-1.0.3-mac.dmg` or `Artist-1.0.3-mac.zip`
-- **Linux**: `Artist-1.0.3-x64.AppImage`
+- **Windows**: `Artist-Setup-2.0.0.exe`
+- **macOS**: `Artist-2.0.0-mac.dmg` or `Artist-2.0.0-mac.zip`
+- **Linux**: `Artist-2.0.0-x64.AppImage`
 
 ### Build from Source
 
 #### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 20+ and npm
 - Git
 
 #### Installation
@@ -69,6 +79,8 @@ Artist/
 ├── electron/              # Electron main process
 │   ├── main.ts           # Main electron file
 │   └── preload.ts        # Preload script
+├── public/                # Static assets copied to the build output
+│   └── 404.html          # SPA routing shim for GitHub Pages
 ├── resources/            # Application resources
 │   └── icons/           # App icons for all platforms
 └── package.json         # Project configuration
@@ -80,12 +92,11 @@ Artist/
 - `npm run build` - Build the Angular app and compile Electron files
 - `npm run electron:dist` - Build distributables for current platform
 - `npm test` - Run unit tests
-- `npm run lint` - Lint the codebase
 
 ### Technologies
 
-- **Frontend**: Angular 17 with standalone components
-- **Desktop Framework**: Electron 29
+- **Frontend**: Angular 19 with standalone components
+- **Desktop Framework**: Electron 41
 - **Styling**: SCSS with CSS animations
 - **Build Tools**: electron-builder, Angular CLI
 - **Languages**: TypeScript
@@ -94,8 +105,6 @@ Artist/
 
 - [ ] User preferences and favorites
 - [ ] Custom resource collections
-- [ ] Offline mode with cached resources
-- [ ] Resource search and filtering
 - [ ] Integration with creative tool APIs
 - [ ] Artist profile creation
 - [ ] Collaborative project boards
