@@ -12,5 +12,14 @@
 </head>
 <body>
   <app-root></app-root>
+  <script>
+    (function () {
+      var redirect = sessionStorage.getItem('redirect');
+      if (redirect) {
+        sessionStorage.removeItem('redirect');
+        history.replaceState(null, '', redirect);
+      }
+    })();
+  </script>
 </body>
 </html>
